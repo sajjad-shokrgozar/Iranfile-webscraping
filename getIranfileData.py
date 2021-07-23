@@ -26,12 +26,20 @@ typeFile.close()
 
 driverPath = os.path.join(os.path.dirname(__file__), '../geckodriver.exe')
 driver = webdriver.Firefox(executable_path=driverPath)
-driver.get('https://iranfile.ir/search')
+
 
 
 
 for region in regionList:
     driver.get('https://iranfile.ir/search')
+
+    st = driver.find_element_by_xpath('/html/body/div[2]/section[1]/form/div/div/div[1]/div[4]/div/button')
+    time.sleep(1)
+    st.click()
+    st = driver.find_element_by_xpath('/html/body/div[2]/section[1]/form/div/div/div[1]/div[4]/div/div/ul/li[5]')
+    time.sleep(1)
+    st.click()
+
     data = driver.find_element_by_xpath('//*[@id="dvRegions"]')
     time.sleep(1)
     data.click()
