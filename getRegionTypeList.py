@@ -11,22 +11,20 @@ import requests
 import bs4
 
 
-driverPath = join(os.path.dirname(__file__), 'geckodriver.exe')
+driverPath = join(os.path.dirname(__file__), '../geckodriver.exe')
 driver = webdriver.Firefox(executable_path=driverPath)
-
+wait = WebDriverWait(driver, 10)
 
 driver.get('https://iranfile.ir/search')
 
 
-
 data = driver.find_element_by_xpath('//*[@id="dvRegions"]')
-time.sleep(2)
+time.sleep(1)
 data.click()
 time.sleep(1)
 data = driver.find_element_by_xpath('//*[@id="1,-11,-1"]').find_element_by_tag_name('span')
 time.sleep(1)
 data.click()
-time.sleep(1)
 
 
 regionList = []
@@ -35,7 +33,6 @@ for count in range(0, 130):
         html = driver.find_element_by_id('1,' + str(count) + ',-1').get_attribute('outerHTML')
         soup = bs4.BeautifulSoup(html, features='html.parser')
         regionList.append(soup.text)
-        print(soup.text)
     except:
         pass
 
@@ -43,7 +40,7 @@ for count in range(0, 130):
 driver.get('https://iranfile.ir/search')
 
 type = driver.find_element_by_xpath('/html/body/div[2]/section[1]/form/div/div/div[1]/div[5]/div/button')
-time.sleep(5)
+time.sleep(1)
 type.click()
 time.sleep(1)
 type = driver.find_element_by_xpath('/html/body/div[2]/section[1]/form/div/div/div[1]/div[5]/div/div/ul').find_elements_by_tag_name('li')

@@ -11,12 +11,6 @@ import requests
 import bs4
 
 
-driverPath = os.path.join(os.path.dirname(__file__), '../geckodriver.exe')
-driver = webdriver.Firefox(executable_path=driverPath)
-
-
-driver.get('https://iranfile.ir/search')
-
 
 regionFile = open('regionList.txt', 'r', encoding='utf8')
 regions = regionFile.read()
@@ -29,10 +23,17 @@ typeList = types.split(';')
 typeFile.close()
 
 
+
+driverPath = os.path.join(os.path.dirname(__file__), '../geckodriver.exe')
+driver = webdriver.Firefox(executable_path=driverPath)
+driver.get('https://iranfile.ir/search')
+
+
+
 for region in regionList:
     driver.get('https://iranfile.ir/search')
     data = driver.find_element_by_xpath('//*[@id="dvRegions"]')
-    time.sleep(2)
+    time.sleep(1)
     data.click()
     time.sleep(1)
     data = driver.find_element_by_xpath('//*[@id="1,-11,-1"]').find_element_by_tag_name('span')
@@ -45,21 +46,19 @@ for region in regionList:
     for count in range(0, 130):
         try:
             driver.find_element_by_id('1,'+ str(count) +',-1').click()
-            time.sleep(1)
+            
         except:
             pass
 
-    # data = driver.find_element_by_xpath('/html/body/div[5]/div/div/div[2]/div/div/div[1]/div/div[1]/div/div[1]/div/div[1]/div/div/ul/li[1]').click()
-    # time.sleep(1)
-
-    count = 1
-    for li in typeList:
+    
+    liTagCount = 11
+    for li in range(1, liTagCount + 1):
         type = driver.find_element_by_xpath('/html/body/div[2]/section[1]/form/div/div/div[1]/div[5]/div/button')
         time.sleep(1)
         type.click()
         time.sleep(1)
 
-        type = driver.find_element_by_xpath('/html/body/div[2]/section[1]/form/div/div/div[1]/div[5]/div/div/ul/li[' + str(count) + ']')
+        type = driver.find_element_by_xpath('/html/body/div[2]/section[1]/form/div/div/div[1]/div[5]/div/div/ul/li[' + str(li) + ']')
         time.sleep(1)
         type.click()
         time.sleep(1)
@@ -70,7 +69,5 @@ for region in regionList:
         urlsFile = open('urls.txt', 'a', encoding='utf8')
         urlsFile.write(driver.current_url + '\n')
         urlsFile.close()
-
-        count += 1
 
     
